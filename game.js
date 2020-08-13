@@ -45,15 +45,9 @@ function setupGame() {
     g.backgroundColor = "white";
 
     // Setup grid
-    map.grid = generateRandomGrid(MAP_WIDTH, MAP_HEIGHT);
-    // map.width = MAP_WIDTH;
-    // map.heigh = MAP_HEIGHT;
-    createMap(map.grid, MAP_WIDTH, MAP_HEIGHT);
+    let grid = generateRandomGrid(MAP_WIDTH, MAP_HEIGHT);
+    map = createMap(grid, MAP_WIDTH, MAP_HEIGHT);
 
-    //createTexture(320, 320);
-    // let test = g.rectangle(TILE_WIDTH * 4, TILE_HEIGHT * 4, "#5771CF");
-    // test.x = 150;
-    // test.y = 150;
     g.state = playGame;
 }
 
@@ -61,6 +55,7 @@ function playGame() {
     
 }
 
+// Create a random grid; delete before submitting
 function generateRandomGrid(width, height) {
     let result = [];
     for (var y = 0; y < height; y++) {
@@ -87,6 +82,10 @@ function createMap(grid, width, height) {
     return result;
 }
 
+function loadProceduralImageAsset() {
+
+}
+
 function tileLookup(i) {
     switch(i) {
     case 0:
@@ -94,7 +93,7 @@ function tileLookup(i) {
         newImage.name = "test.png";
         let a = {};
         a = new Image();
-        a.src = createTexture(TILE_WIDTH, TILE_HEIGHT);
+        a.src = createRandomTileNoiseTexture(TILE_WIDTH, TILE_HEIGHT);
         g.assets[newImage.name] = {
             source: a,
             frame: {
@@ -104,26 +103,8 @@ function tileLookup(i) {
                 h: TILE_HEIGHT
             }
         };
-        
-        /*
-        image.name = source;
-        self[image.name] = {
-            //If you just want the file name and the extension, you can
-            //get it like this:
-            //image.name = source.split("/").pop();
-            //Assign the image as a property of the assets object so
-            //we can access it like this: `assets["images/imageName.png"]`.
-            source: image,
-            frame: {
-                x: 0,
-                y: 0,
-                w: image.width,
-                h: image.height
-            }
-        };*/
-        //console.log(g.assets["test.png"]);
         return g.sprite("test.png");
-        //return g.rectangle(32, 32, "#011D80");
+        //return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#011D80");
     case 1:
         return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#5771CF");
     case 2:
@@ -137,7 +118,7 @@ function tileLookup(i) {
     }
 }
 
-function createColor() {
+function createRandomColorHSL() {
     //saturation is the whole color spectrum
     const h = Math.floor(g.randomFloat(0,1) * 360);
     //saturation goes from 40 to 100, it avoids greyish colors
@@ -148,19 +129,16 @@ function createColor() {
     return "hsl(" + h + "," + s + "," + l + ")";
 }
 
-function createTexture(width, height) {
+function createRandomTileNoiseTexture(width, height) {
     const opts = {};
 
     opts.seed = opts.seed || Math.floor((Math.random()*Math.pow(10,16))).toString(16);
 
-    opts.size = opts.size || 8;
-    opts.scale = opts.scale || 8;
-    opts.color = opts.color || createColor();
-    opts.bgcolor = opts.bgcolor || createColor();
-    opts.spotcolor = opts.spotcolor || createColor();
-
-
-
+    opts.size = opts.size || 64;
+    opts.scale = opts.scale || 1;
+    opts.color = opts.color || createRandomColorHSL();
+    opts.bgcolor = opts.bgcolor || createRandomColorHSL();
+    opts.spotcolor = opts.spotcolor || createRandomColorHSL();
 
     const dataWidth = Math.ceil(width / 2);
     const mirrorWidth = width - dataWidth;
@@ -208,8 +186,6 @@ function createTexture(width, height) {
             cc.fillRect(col * opts.scale, row * opts.scale, opts.scale, opts.scale);
         }
     }
-
-    //console.log(cc.getImageData(0, 0, width, height));
 
     return canvas.toDataURL("image/png");
 }
