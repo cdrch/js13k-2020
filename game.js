@@ -5,13 +5,11 @@ var map = {};
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
 
-const TILE_WIDTH = 32;
-const TILE_HEIGHT = 32;
+const TILE_WIDTH = 64;
+const TILE_HEIGHT = 64;
 
 const MAP_WIDTH = SCREEN_WIDTH / TILE_WIDTH;
 const MAP_HEIGHT = SCREEN_HEIGHT / TILE_HEIGHT;
-
-
 
 // Ga instance setup
 var g = ga(
@@ -52,8 +50,10 @@ function setupGame() {
     // map.heigh = MAP_HEIGHT;
     createMap(map.grid, MAP_WIDTH, MAP_HEIGHT);
 
-    createTexture(320, 320);
-
+    //createTexture(320, 320);
+    // let test = g.rectangle(TILE_WIDTH * 4, TILE_HEIGHT * 4, "#5771CF");
+    // test.x = 150;
+    // test.y = 150;
     g.state = playGame;
 }
 
@@ -94,14 +94,14 @@ function tileLookup(i) {
         newImage.name = "test.png";
         let a = {};
         a = new Image();
-        a.src = createTexture(32, 32);
+        a.src = createTexture(TILE_WIDTH, TILE_HEIGHT);
         g.assets[newImage.name] = {
             source: a,
             frame: {
                 x: 0,
                 y: 0,
-                w: 32,
-                h: 32
+                w: TILE_WIDTH,
+                h: TILE_HEIGHT
             }
         };
         
@@ -121,19 +121,19 @@ function tileLookup(i) {
                 h: image.height
             }
         };*/
-        console.log(g.assets["test.png"]);
+        //console.log(g.assets["test.png"]);
         return g.sprite("test.png");
         //return g.rectangle(32, 32, "#011D80");
     case 1:
-        return g.rectangle(32, 32, "#5771CF");
+        return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#5771CF");
     case 2:
-        return g.rectangle(32, 32, "#2A3D82");
+        return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#2A3D82");
     case 3:
-        return g.rectangle(32, 32, "#362906");
+        return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#362906");
     case 4:
-        return g.rectangle(32, 32, "#826B2A");
+        return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#826B2A");
     default:
-        return g.rectangle(32, 32, "#FFFFFF");
+        return g.rectangle(TILE_WIDTH, TILE_HEIGHT, "#FFFFFF");
     }
 }
 
@@ -153,8 +153,8 @@ function createTexture(width, height) {
 
     opts.seed = opts.seed || Math.floor((Math.random()*Math.pow(10,16))).toString(16);
 
-    opts.size = opts.size || 32;
-    opts.scale = opts.scale || 32;
+    opts.size = opts.size || 8;
+    opts.scale = opts.scale || 8;
     opts.color = opts.color || createColor();
     opts.bgcolor = opts.bgcolor || createColor();
     opts.spotcolor = opts.spotcolor || createColor();
