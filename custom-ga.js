@@ -7080,11 +7080,11 @@ GA.plugins = function(ga) {
                         //left side of the tileset and adds them to the current tile's position
                         if (spacing > 0) {
                             tilesetX
-                += spacing
-                + (spacing * ((gid - 1) % numberOfTilesetColumns));
+                            += spacing
+                            + (spacing * ((gid - 1) % numberOfTilesetColumns));
                             tilesetY
-                += spacing
-                + (spacing * Math.floor((gid - 1) / numberOfTilesetColumns));
+                            += spacing
+                            + (spacing * Math.floor((gid - 1) / numberOfTilesetColumns));
                         }
 
                         //Use the above values to create the sprite's image from
