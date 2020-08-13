@@ -3,6 +3,22 @@
 <meta charset="utf-8">
 <title>JS13K 2020 Entry by cdrch</title>
 <body>
+<!-- Ensures there are no scrollbars -->
+<style type="text/css">
+    body {
+        /* width: 100%; */
+        /* height: 100%; */
+        margin: auto;
+        padding: 0;
+        /*overflow: hidden;*/
+    }
+    canvas {
+        position: absolute;
+        width: 90%;
+        height: 90%;
+        /* margin: auto; */
+    }
+</style>
 <script>
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-prototype-builtins */
@@ -1921,7 +1937,7 @@ GA.create = function(width, height, setup, assetsToLoad, load) {
 
 
     /*
-  Rendering
+  Chapter 3: Rendering
   -------
 
   The render method that displays all the sprites on the canvas.
@@ -3490,7 +3506,7 @@ GA.plugins = function(ga) {
 
         //Scale the canvas based on whichever value is less: `scaleX` or `scaleY`
         scale = Math.min(scaleX, scaleY);
-        ga.canvas.style.transformOrigin = "0 0";
+        ga.canvas.style.transformOrigin = "50% 50%"; //TODO: was originall 0 0 - this a problem?
         ga.canvas.style.transform = "scale(" + scale + ")";
 
         //2. Center the canvas.
@@ -3518,7 +3534,6 @@ GA.plugins = function(ga) {
             ga.canvas.style.marginLeft = margin + "px";
             ga.canvas.style.marginRight = margin + "px";
         }
-
         //Center vertically (for wide canvases) 
         if (center === "vertically") {
             margin = (window.innerHeight - ga.canvas.height * scale) / 2;
@@ -3528,6 +3543,7 @@ GA.plugins = function(ga) {
 
         //3. Remove any padding from the canvas  and body and set the canvas
         //display style to "block"
+        //TODO: replace all of this with a single CSS line?
         ga.canvas.style.paddingLeft = 0;
         ga.canvas.style.paddingRight = 0;
         ga.canvas.style.paddingTop = 0;
@@ -3561,7 +3577,6 @@ GA.plugins = function(ga) {
     };
 
 
-
     //### scaleToFit - DEPRICATED - DO NOT USE!
     /*
   Center and scale Ga inside the HTML page. The `dimension` can be either "width" or "height"
@@ -3569,6 +3584,8 @@ GA.plugins = function(ga) {
   */
     ga.scaleToFit = function(dimension, color) {
         var scaleX, scaleY, scale;
+
+        var canvasRatio = ga.canvas.height;
 
         if (dimension === "width") {
             scaleX = ga.canvas.width / window.innerWidth;
@@ -3610,6 +3627,7 @@ GA.plugins = function(ga) {
         ga.scale = scale;
     };
 
+    
     /*
   ###shakingSprites
 
@@ -6903,7 +6921,7 @@ GA.plugins = function(ga) {
     };
 
     /*
-  Chapter 4: Sprite controllers
+  Chapter 5: Sprite controllers
   -----------------------------
   */
 
@@ -8349,6 +8367,48 @@ GA.plugins = function(ga) {
     };
 //plugins ends
 };
+
+/* The actual game code */
+
+// Ga instance setup
+var g = ga(
+    1920, 1080, setupGame
+);
+g.start();
+
+// Automatically scale and center the game
+g.scaleToWindow();
+
+// Re-scale the canvas if the browser window is changed
+window.addEventListener("resize", function(event){ 
+    g.scaleToWindow();
+});
+
+// g.enableFullscreen(88, 120);
+
+// Global variables
+
+// The function that runs while initially loading objects
+/* // Not needed if going fully procedural for assets
+function load() {
+    // Use Ga's built in `progressBar` to display a loading progress percentage bar while the assets are loading
+    g.progressBar.create(g.canvas, g.assets);
+
+    // Update the bar each frame
+    g.progressBar.update();
+}*/
+
+function setupGame() {
+    g.canvas.style.border = "40px black dashed";
+    g.backgroundColor = "white";
+
+    g.state = playGame;
+}
+
+function playGame() {
+    //console.log(g.backgroundColor);
+}
+
 
 
 </script>
